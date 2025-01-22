@@ -22,8 +22,17 @@ export class GeminiHandler implements ApiHandler {
 			model: this.getModel().id,
 			systemInstruction: systemPrompt,
 		})
+		const geminiContent = messages.map(convertAnthropicMessageToGemini)
+
+
+		console.log("[Cline Gemini Request]",
+			`\nSystem Prompt:\n${systemPrompt}
+        \nMessages:\n`,
+			JSON.stringify(geminiContent, null, 2)
+		);
+
 		const result = await model.generateContentStream({
-			contents: messages.map(convertAnthropicMessageToGemini),
+			contents: geminiContent,
 			generationConfig: {
 				// maxOutputTokens: this.getModel().info.maxTokens,
 				temperature: 0,
